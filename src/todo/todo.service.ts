@@ -22,11 +22,6 @@ export class TodoService {
     return this.todoRepository.findOneBy({id: id});
   }
 
-  update(id: number, updateTodoDto: UpdateTodoDto) {
-    updateTodoDto.id = id;
-    return this.todoRepository.save(updateTodoDto)
-  }
-
   remove(id: number) : Promise<DeleteResult>{
     return this.todoRepository.delete(id);
   }
