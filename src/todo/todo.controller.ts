@@ -1,23 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  HttpException,
+  HttpStatus,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 
 @Controller('todo')
 export class TodoController {
-  constructor(private readonly todoService: TodoService) { }
+  constructor(private readonly todoService: TodoService) {}
 
   @Post()
   async create(@Body() createTodoDto: CreateTodoDto) {
     try {
       return await this.todoService.create(createTodoDto);
+    } catch (err) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: err.message,
+          error: 'Bad Request',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
-    catch (err) {
-      throw new HttpException({
-        "statusCode": HttpStatus.BAD_REQUEST,
-        message: err.message,
-        error: "Bad Request"
-      }, HttpStatus.BAD_REQUEST);
-    };
   }
 
   @Get()
@@ -27,12 +39,16 @@ export class TodoController {
 
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: string) {
-    let data = await this.todoService.findOne(+id);
-    if (!data) throw new HttpException({
-      "statusCode": HttpStatus.NOT_FOUND,
-      message: `Todo with id ${id} not found.`,
-      error: "Not Found"
-    }, HttpStatus.NOT_FOUND);
+    const data = await this.todoService.findOne(+id);
+    if (!data)
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.NOT_FOUND,
+          message: `Todo with id ${id} not found.`,
+          error: 'Not Found',
+        },
+        HttpStatus.NOT_FOUND,
+      );
     return data;
   }
 

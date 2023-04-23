@@ -2,9 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TodoController } from './todo.controller';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
-import { BadRequestException, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
-const createTodoDto: CreateTodoDto = { title: 'test', details: 'test', date: 'now' };
+const createTodoDto: CreateTodoDto = {
+  title: 'test',
+  details: 'test',
+  date: 'now',
+};
 const expectedResult = { id: 1, ...createTodoDto };
 
 jest.mock('./todo.service');
@@ -38,15 +42,17 @@ describe('TodoController', () => {
     it('Should throw a Bad Request exception when todo service cause an error', async () => {
       const error = new Error('some error');
       jest.spyOn(service, 'create').mockRejectedValueOnce(error);
-      await expect(controller.create(null)).rejects.toThrow(new HttpException(
-        {
-          statusCode: HttpStatus.BAD_REQUEST,
-          message: error.message,
-          error: 'Bad Request',
-        },
-        HttpStatus.BAD_REQUEST,
-      ));
-    })
+      await expect(controller.create(null)).rejects.toThrow(
+        new HttpException(
+          {
+            statusCode: HttpStatus.BAD_REQUEST,
+            message: error.message,
+            error: 'Bad Request',
+          },
+          HttpStatus.BAD_REQUEST,
+        ),
+      );
+    });
   });
 
   describe('findAll', () => {
@@ -55,7 +61,7 @@ describe('TodoController', () => {
       const result = await controller.findAll();
       expect(service.findAll).toHaveBeenCalled();
       expect(result).toEqual([expectedResult]);
-    })
+    });
   });
 
   describe('findOne', () => {
@@ -67,7 +73,7 @@ describe('TodoController', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    it("Should throw an 404 Not found exception", async () => {
+    it('Should throw an 404 Not found exception', async () => {
       const id = '0';
       jest.spyOn(service, 'findOne').mockReturnValueOnce(null);
       await expect(controller.findOne(id)).rejects.toThrow(
@@ -82,5 +88,4 @@ describe('TodoController', () => {
       );
     });
   });
-
 });

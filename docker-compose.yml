@@ -1,0 +1,29 @@
+
+version: "3"
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+    - "5432:5432"
+    networks:
+      - postgres
+    volumes:
+      - /data/postgres:/data/postgres
+    env_file:
+      - docker.env
+ 
+  nest-api:
+    image: nest-api
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    networks:
+      - postgres
+ 
+networks:
+  postgres:
+    driver: bridge
