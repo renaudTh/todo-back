@@ -7,6 +7,6 @@ COPY package.json package-lock.json /app/
 RUN npm ci
 COPY . .
 RUN npm run build
-USER node  
+
 
 CMD ["npm", "run", "start:prod"]
