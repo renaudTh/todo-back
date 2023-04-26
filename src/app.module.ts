@@ -5,6 +5,9 @@ import { TodoModule } from './todo/todo.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Todo } from './todo/entities/todo.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from './auth/auth/auth.module';
+import { UsersModule } from './users/users/users.module';
+import { User } from './users/users/entities/user.entity';
 
 @Module({
   imports: [
@@ -18,13 +21,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         username: configService.get('POSTGRES_USER'),
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
-        entities: [Todo],
+        entities: [Todo, User],
         logging: true,
         synchronize: true,
       }),
     }),
     TodoModule,
     ConfigModule.forRoot(),
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
