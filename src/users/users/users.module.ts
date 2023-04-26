@@ -9,10 +9,10 @@ import { User } from './entities/user.entity';
   imports: [TypeOrmModule.forFeature([User])],
   controllers: [UsersController],
   providers: [UsersService],
-  exports:[UsersService]
+  exports: [UsersService],
 })
-
 export class UsersModule {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>){}
+    @InjectRepository(User) private userRepository: Repository<User>,
+  ) {}
 }
