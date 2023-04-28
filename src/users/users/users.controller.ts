@@ -9,11 +9,14 @@ import {
   HttpException,
   HttpStatus,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
+import { Auth } from 'src/auth/auth/entities/auth.entity';
+import { UsersGuard } from './users.guard';
 
 @Controller('users')
 export class UsersController {
@@ -48,6 +51,7 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @UseGuards(UsersGuard)
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: string) {
     const data = await this.usersService.findOne(+id);
@@ -63,7 +67,7 @@ export class UsersController {
     }
     return data;
   }
-
+  @UseGuards(UsersGuard)
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: string,
@@ -71,7 +75,7 @@ export class UsersController {
   ) {
     return this.usersService.update(+id, updateUserDto);
   }
-
+  @UseGuards(UsersGuard)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: string) {
     return this.usersService.remove(+id);
