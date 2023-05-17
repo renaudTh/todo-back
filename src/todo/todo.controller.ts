@@ -8,9 +8,11 @@ import {
   HttpException,
   HttpStatus,
   ParseIntPipe,
+  Patch,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
+import { UpdateTodoDto } from './dto/update-todo.dto';
 
 @Controller('todo')
 export class TodoController {
@@ -52,8 +54,28 @@ export class TodoController {
     return data;
   }
 
+  @Get('completed')
+  async findCompleted(){
+    const data = await this.todoService.findCompleted();
+    return data;
+  }
+  @Get('active')
+  async findActive(){
+    const data = await this.todoService.findActive();
+    return data;
+  }
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: string) {
     return await this.todoService.remove(+id);
   }
+  @Delete("completed")
+  async deleteCompleted(){
+    return await this.todoService.deleteCompleted();
+  }
+
+  @Patch()
+  async update(@Body() updateTodoDto: UpdateTodoDto){
+    return await this.todoService.update(updateTodoDto);
+  }
+
 }

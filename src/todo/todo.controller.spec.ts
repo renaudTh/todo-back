@@ -6,8 +6,7 @@ import { HttpException, HttpStatus } from '@nestjs/common';
 
 const createTodoDto: CreateTodoDto = {
   title: 'test',
-  details: 'test',
-  date: 'now',
+  completed: false
 };
 const expectedResult = { id: 1, ...createTodoDto };
 

@@ -5,8 +5,6 @@ export class Todo {
   id: number;
   @Column()
   title: string;
-  @Column()
-  details: string;
-  @Column()
-  date: string;
+  @Column('boolean', {default: false})
+  completed: boolean = false;
 }

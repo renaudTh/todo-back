@@ -14,7 +14,12 @@ services:
       - docker.env
  
   nest-api:
-    image: nest-api
+    build:
+      context: .
+      target: create-build
+    command: npm run start:dev
+    volumes:
+      - ./src:/app/src
     env_file:
       - .env
     ports:

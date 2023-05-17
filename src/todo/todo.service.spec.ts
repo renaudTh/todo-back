@@ -6,19 +6,23 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 const todo: Todo = {
   id: 1,
   title: 'First Todo',
-  details: 'Have a coffe',
-  date: 'now',
-};
+  completed: false
+}
 
 const todoList: Todo[] = [
   todo,
   {
     id: 2,
     title: 'Hard code',
-    details: 'Write super appli',
-    date: 'tomorrow',
+    completed: false,
   },
 ];
+
+const completedTodo: Todo = {
+  id: 1,
+  title: 'First Todo',
+  completed: true
+}
 describe('TodoService', () => {
   let service: TodoService;
   let repository: Repository<Todo>;
@@ -34,6 +38,7 @@ describe('TodoService', () => {
             findOneBy: jest.fn().mockReturnValue(todo),
             save: jest.fn().mockReturnValue(todo),
             delete: jest.fn().mockReturnValue(todo),
+            update: jest.fn().mockReturnValue(completedTodo)
           },
         },
       ],
